@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画江湖之不良人 - 剧情介绍</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 变量定义 */
+        :root {
+            --primary: #e74c3c;
+            --accent: #ff7f50;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f5f5f5;
+            --light-gray: #b0b0b0;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        /* 固定背景图片 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('shuai.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.12;
+            z-index: -1;
+        }
+        
+        body {
+            background: linear-gradient(to bottom, #1a1a2e 0%, #0d0d1a 100%);
+            background-attachment: fixed;
+            color: var(--light);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 8px 0;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        
+        .login-btn {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--primary);
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .login-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+        
+        /* 轮播图部分 */
+        .hero-section {
+            margin-top: 80px;
+            padding: 40px 5% 0;
+        }
+        
+        .carousel-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            height: 550px;
+        }
+        
+        .carousel-slide {
+            position: relative;
+            height: 100%;
+            display: none;
+            animation: fade 1s ease;
+        }
+        
+        .carousel-slide.active {
+            display: block;
+        }
+        
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+        
+        .carousel-slide:hover img {
+            transform: scale(1.08);
+        }
+        
+        .slide-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 40px;
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.9), transparent);
+        }
+        
+        .slide-tag {
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .slide-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--light);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        }
+        
+        .slide-content p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            color: var(--light-gray);
+            line-height: 1.6;
+        }
+        
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 20px;
+        }
+        
+        .carousel-control {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .carousel-control:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+        }
+        
+        .indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .indicator.active {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+        
+        /* 剧情介绍部分 */
+        .content-section {
+            padding: 80px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.8rem;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .season-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
+        }
+        
+        .season-card {
+            background: rgba(25, 25, 35, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .season-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 40px rgba(231, 76, 60, 0.25);
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+        
+        .season-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .season-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+        
+        .season-card:hover .season-image img {
+            transform: scale(1.1);
+        }
+        
+        .season-content {
+            padding: 30px;
+        }
+        
+        .season-number {
+            background: var(--primary);
+            color: white;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .season-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+        
+        .season-desc {
+            color: var(--light-gray);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .characters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .character {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(40, 40, 50, 0.6);
+            padding: 8px 15px;
+            border-radius: 50px;
+            transition: var(--transition);
+        }
+        
+        .character:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .character img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--light);
+        }
+        
+        .character-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* 角色展示部分 */
+        .character-section {
+            padding: 80px 5%;
+            background: rgba(15, 15, 25, 0.6);
+            backdrop-filter: blur(5px);
+            margin-top: 50px;
+            border-top: 1px solid rgba(231, 76, 60, 0.2);
+        }
+        
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .character-card {
+            background: rgba(30, 30, 40, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .character-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(231, 76, 60, 0.25);
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+        
+        .character-avatar {
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .character-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+        
+        .character-card:hover .character-avatar img {
+            transform: scale(1.1);
+        }
+        
+        .character-role {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+        
+        .character-info {
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .character-name-large {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--light);
+        }
+        
+        .character-desc {
+            color: var(--light-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* 页脚 */
+        footer {
+            background: rgba(10, 10, 15, 0.9);
+            padding: 60px 5% 30px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(231, 76, 60, 0.2);
+        }
+        
+        .footer-logo {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-size: 1.3rem;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            color: var(--light-gray);
+            margin-top: 30px;
+            font-size: 0.9rem;
+        }
+        
+        /* 动画 */
+        @keyframes fade {
+            from { opacity: 0.4; }
+            to { opacity: 1; }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .carousel-container {
+                height: 450px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .carousel-container {
+                height: 400px;
+            }
+            
+            .navbar {
+                flex-wrap: wrap;
+                padding: 15px;
+            }
+            
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+                gap: 10px;
+            }
+            
+            .season-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .carousel-container {
+                height: 350px;
+            }
+            
+            .slide-content {
+                padding: 25px;
+            }
+            
+            .slide-content h2 {
+                font-size: 1.8rem;
+            }
+            
+            .carousel-control {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-yin-yang"></i>
+            </div>
+            <div class="logo-text">不良人</div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="sy.html">首页</a></li>
+            <li><a href="剧情介绍.html" class="active">剧情介绍</a></li>
+            <li><a href="321.html">排行</a></li>
+            <li><a href="456.html">人物介绍</a></li>
+            <li><a href="789.html">天罡传</a></li>
+            <li><a href="#">关于我们</a></li>
+            
+        </ul>
+        <button class="login-btn">登录</button>
+    </nav>
+    
+    <!-- 轮播图 -->
+    <section class="hero-section">
+        <div class="carousel-container">
+            <div class="carousel-slide active">
+                <img src="jv1.jpg" alt="不良人第一季">
+                <div class="slide-content">
+                    <span class="slide-tag">经典回顾</span>
+                    <h2>乱世初现 · 龙泉之谜</h2>
+                    <p>唐朝末年，天下大乱，神秘组织"不良人"执行最后一次任务后消失，随之不见的还有国库宝藏...</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="jv2.jpg" alt="不良人第二季">
+                <div class="slide-content">
+                    <span class="slide-tag">巅峰之作</span>
+                    <h2>龙争虎斗 · 江湖再起</h2>
+                    <p>姬如雪坠崖生死未卜，李星云苦苦寻找，各方势力为夺宝藏心怀鬼胎，不良帅暗中布局...</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="jv3.jpg" alt="不良人第三季">
+                <div class="slide-content">
+                    <span class="slide-tag">最新篇章</span>
+                    <h2>乱世豪侠 · 王道之争</h2>
+                    <p>乾陵被毁，龙泉宝藏下落不明，不良帅决心挟天子以令诸侯，王道与霸道的终极交锋...</p>
+                </div>
+            </div>
+            
+            <div class="carousel-controls">
+                <button class="carousel-control prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-control next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="carousel-indicators">
+                <div class="indicator active"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 剧情介绍 -->
+    <section class="content-section">
+        <div class="section-title">
+            <h2>剧情篇章</h2>
+        </div>
+        
+        <div class="season-cards">
+            <div class="season-card">
+                <div class="season-image">
+                    <img src="jv6.jpg" alt="第一季">
+                </div>
+                <div class="season-content">
+                    <span class="season-number">第一季</span>
+                    <h3 class="season-title">乱世初现</h3>
+                    <p class="season-desc">唐朝末年，天下大乱，藩镇割据，群雄并起。神秘组织"不良人"执行最后一次任务后消失，随之不见的还有国库宝藏。李星云与师妹陆林轩下山历练，途中结识了姬如雪和张子凡，后又偶得藏有龙泉剑秘密的火龙剑...</p>
+                
+                </div>
+            </div>
+            
+            <div class="season-card">
+                <div class="season-image">
+                    <img src="jv4.jpg" alt="第二季">
+                </div>
+                <div class="season-content">
+                    <span class="season-number">第二季</span>
+                    <h3 class="season-title">龙争虎斗</h3>
+                    <p class="season-desc">姬如雪为救李星云坠崖生死未卜，李星云苦苦找寻姬如雪，同时继续追查龙泉宝藏的下落。江湖各派为夺宝藏心怀鬼胎、各自派人跟踪暗算李星云、张子凡、陆林轩等人。陆林轩意外中毒导致失忆，张子凡心痛不已...</p>
+                    
+                </div>
+            </div>
+            
+            <div class="season-card">
+                <div class="season-image">
+                    <img src="jv5.jpg" alt="第三季">
+                </div>
+                <div class="season-content">
+                    <span class="season-number">第三季</span>
+                    <h3 class="season-title">乱世豪侠</h3>
+                    <p class="season-desc">乾陵被毁、龙泉宝藏下落不明，前朝皇子李星云欲归隐山林，不良帅决心挟天子以令诸侯，号召江湖各大势力复辟大唐，王道与霸道将正式交锋...李星云身世之谜被揭开，原来他竟是太宗皇帝嫡系血脉...</p>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 角色展示 -->
+    <section class="character-section">
+        <div class="section-title">
+            <h2>主要角色</h2>
+        </div>
+        
+        <div class="character-grid">
+            <div class="character-card">
+                <div class="character-avatar">
+                    <img src="li.jpg" alt="李星云">
+                    <span class="character-role">男主角</span>
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name-large">李星云</h3>
+                    <p class="character-desc">唐昭宗李晔之子，幼年惨遭灭门之祸，被阳叔子所救并拜在其门下学武，性格洒脱不羁，重情重义。</p>
+                </div>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-avatar">
+                    <img src="ji.jpg" alt="姬如雪">
+                    <span class="character-role">女主角</span>
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name-large">姬如雪</h3>
+                    <p class="character-desc">幻音坊侍女，奉命寻找火灵芝，却遇上了李星云，两人在患难中互生情愫，后为李星云妻子。</p>
+                </div>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-avatar">
+                    <img src="zhang.jpg" alt="张子凡">
+                    <span class="character-role">男二号</span>
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name-large">张子凡</h3>
+                    <p class="character-desc">通文馆少主，实为天师府张玄陵之子，酒醉后判若两人，后为天师府掌门，陆林轩丈夫。</p>
+                </div>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-avatar">
+                    <img src="lu.jpg" alt="陆林轩">
+                    <span class="character-role">女二号</span>
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name-large">陆林轩</h3>
+                    <p class="character-desc">李星云师妹，陆佑劫独女，性格活泼开朗，后成为张子凡妻子，与李星云情同兄妹。</p>
+                </div>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-avatar">
+                    <img src="yuan.jpg" alt="不良帅">
+                    <span class="character-role">大帅</span>
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name-large">不良帅</h3>
+                    <p class="character-desc">不良人统帅，本名袁天罡，武功深不可测，一心复辟唐朝。</p>
+                </div>
+            </div>
+            
+            <div class="character-card">
+                <div class="character-avatar">
+                    <img src="nv.jpg" alt="女帝">
+                    <span class="character-role">幻音坊主</span>
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name-large">女帝</h3>
+                    <p class="character-desc">幻音坊主人，实为岐王李茂贞，为寻找龙泉宝藏而女扮男装。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-logo">
+            <i class="fas fa-dragon"></i>
+        </div>
+        
+        <div class="footer-links">
+            <a href="#">关于我们</a>
+            <a href="#">版权声明</a>
+            <a href="#">隐私政策</a>
+            <a href="#">联系方式</a>
+            <a href="#">加入我们</a>
+            <a href="#">网站地图</a>
+        </div>
+        
+        <div class="social-links">
+            <a href="#"><i class="fab fa-weibo"></i></a>
+            <a href="#"><i class="fab fa-weixin"></i></a>
+            <a href="#"><i class="fab fa-bilibili"></i></a>
+            <a href="#"><i class="fab fa-qq"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+        
+    </footer>
+    
+    <script>
+        // 轮播图控制
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const indicators = document.querySelectorAll('.indicator');
+            const prevBtn = document.querySelector('.prev');
+            const nextBtn = document.querySelector('.next');
+            let currentSlide = 0;
+            
+            // 显示指定幻灯片
+            function showSlide(n) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                currentSlide = (n + slides.length) % slides.length;
+                
+                slides[currentSlide].classList.add('active');
+                indicators[currentSlide].classList.add('active');
+            }
+            
+            // 下一张
+            function nextSlide() {
+                showSlide(currentSlide + 1);
+            }
+            
+            // 上一张
+            function prevSlide() {
+                showSlide(currentSlide - 1);
+            }
+            
+            // 绑定按钮事件
+            nextBtn.addEventListener('click', nextSlide);
+            prevBtn.addEventListener('click', prevSlide);
+            
+            // 绑定指示器事件
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    showSlide(index);
+                });
+            });
+            
+            // 自动轮播
+            setInterval(nextSlide, 5000);
+            
+            // 导航栏滚动效果
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.style.background = 'rgba(10, 10, 10, 0.95)';
+                    navbar.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.5)';
+                } else {
+                    navbar.style.background = 'rgba(10, 10, 10, 0.85)';
+                    navbar.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.3)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

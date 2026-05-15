@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画江湖之不良人 - 人物图鉴</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary: #e74c3c;
+            --accent: #9b59b6;
+            --dark: #1a1a1a;
+            --light: #f8f9fa;
+            --light-gray: #e0e0e0;
+            --gold: #f1c40f;
+            --silver: #bdc3c7;
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c16 0%, #1a1a2e 100%);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* 固定背景 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('shuai.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.12;
+            z-index: -1;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 8px 0;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        
+        .login-btn {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--primary);
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .login-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+        
+        /* 英雄区域 */
+        .hero-section {
+            margin-top: 80px;
+            padding: 80px 5% 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #f1c40f, #e74c3c, #9b59b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(to right, #f1c40f, #e74c3c, #9b59b6);
+            border-radius: 2px;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 30px auto 50px;
+            color: var(--light-gray);
+            font-weight: 300;
+            line-height: 1.8;
+        }
+        
+        /* 人物卡片区域 */
+        .characters-section {
+            padding: 40px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .character-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            position: relative;
+            transform: translateY(0);
+            color: #333;
+        }
+        
+        .character-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .character-header {
+            height: 280px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .character-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .character-card:hover .character-header img {
+            transform: scale(1.1);
+        }
+        
+        .character-rank {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--gold), #e67e22);
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .character-info {
+            padding: 25px;
+        }
+        
+        .character-name {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: var(--dark);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .character-name::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+        
+        .character-title {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .character-desc {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .character-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 5px;
+        }
+        
+        .season-badges {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .season-badge {
+            background: var(--accent);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background: rgba(10, 10, 10, 0.9);
+            padding: 50px 5% 30px;
+            margin-top: 80px;
+            border-top: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 3%;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 2.3rem;
+            }
+            
+            .character-name {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .character-card {
+                max-width: 350px;
+                margin: 0 auto;
+            }
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .character-card {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .character-card:nth-child(1) { animation-delay: 0.1s; }
+        .character-card:nth-child(2) { animation-delay: 0.2s; }
+        .character-card:nth-child(3) { animation-delay: 0.3s; }
+        .character-card:nth-child(4) { animation-delay: 0.4s; }
+        .character-card:nth-child(5) { animation-delay: 0.5s; }
+        
+        /* 滚动条美化 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(20, 20, 30, 0.8);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #c0392b, #8e44ad);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-yin-yang"></i>
+            </div>
+            <div class="logo-text">不良人</div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="sy.html">首页</a></li>
+            <li><a href="剧情介绍.html">剧情介绍</a></li>
+            <li><a href="321.html">排行</a></li>
+            <li><a href="456.html" class="active">人物介绍</a></li>
+            <li><a href="789.html">天罡传</a></li>
+            <li><a href="#">关于我们</a></li>
+        </ul>
+        <button class="login-btn">会员中心</button>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="hero-section">
+        <h1 class="hero-title">人物图鉴</h1>
+        <p class="hero-subtitle">
+            唐朝末年，天下大乱，藩镇割据。乱世之中，英雄辈出，枭雄崛起。五大势力明争暗斗，龙泉宝藏的秘密牵动着所有人的心。
+            在这个风起云涌的时代，他们各自书写着自己的传奇...
+        </p>
+    </section>
+
+    <!-- 人物介绍区域 -->
+    <section class="characters-section">
+        <h2 class="section-title">核心人物</h2>
+        
+        <div class="characters-grid">
+            <!-- 袁天罡 -->
+            <div class="character-card">
+                <div class="character-header">
+                    <img src="yuan.jpg" alt="袁天罡">
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name">袁天罡</h3>
+                    <div class="character-title">不良帅 · 大唐国师</div>
+                    <p class="character-desc">
+                        唐朝国师，不良人最高首领。拥有长生不老之术，一心想要恢复李唐王朝。武功深不可测，智谋超群，以天下为棋盘，众生为棋子。
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 李星云 -->
+            <div class="character-card">
+                <div class="character-header">
+                    <img src="li.jpg" alt="李星云">
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name">李星云</h3>
+                    <div class="character-title">李唐遗孤 · 天罡传人</div>
+                    <p class="character-desc">
+                        李唐皇室唯一的血脉，被隐士阳叔子收养。生性洒脱不羁，向往自由生活，却因身世被卷入天下纷争。身负天罡诀，武功日益精进。
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 姬如雪 -->
+            <div class="character-card">
+                <div class="character-header">
+                    <img src="ji.jpg" alt="姬如雪">
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name">姬如雪</h3>
+                    <div class="character-title">幻音坊侍女 · 李星云挚爱</div>
+                    <p class="character-desc">
+                        幻音坊侍女，武功高强，性格冷艳。为救李星云而牺牲，后被苗疆巫王用蛊术复活但失去记忆。在旅途中与李星云产生深厚感情。
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 女帝 -->
+            <div class="character-card">
+                <div class="character-header">
+                    <img src="nv.jpg" alt="女帝">
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name">女帝</h3>
+                    <div class="character-title">幻音坊之主 · 岐王</div>
+                    <p class="character-desc">
+                        幻音坊主人，实力深不可测，岐王李茂贞的妹妹。气质高贵，心思缜密，为达目的不择手段。在乱世中寻求生存之道。
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 张子凡 -->
+            <div class="character-card">
+                <div class="character-header">
+                    <img src="zhang.jpg" alt="张子凡">
+                </div>
+                <div class="character-info">
+                    <h3 class="character-name">张子凡</h3>
+                    <div class="character-title">通文馆少主 · 陆林轩恋人</div>
+                    <p class="character-desc">
+                        通文馆少主，李嗣源义子。表面风流倜傥，实则重情重义。与李星云、陆林轩结为好友，却因身份立场而面临艰难抉择。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <script>
+        // 卡片悬停效果增强
+        document.querySelectorAll('.character-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-15px)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(10, 10, 10, 0.95)';
+                navbar.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.5)';
+            } else {
+                navbar.style.background = 'rgba(10, 10, 10, 0.85)';
+                navbar.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.3)';
+            }
+        });
+    </script>
+</body>
+</html>

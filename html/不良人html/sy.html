@@ -1,0 +1,1047 @@
+    <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不良人 - 国漫巅峰之作</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        
+        :root {
+            --primary: #e74c3c;
+            --primary-dark: #c0392b;
+            --accent: #f39c12;
+            --dark: #141414;
+            --darker: #0a0a0a;
+            --light: #f5f5f5;
+            --gray: #666;
+            --light-gray: #e0e0e0;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        body {
+            background: linear-gradient(to bottom, #2c3e50, #1a1a2e, #0d0d1a);
+            color: var(--light);
+            min-height: 100vh;
+            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* 固定背景图片 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('shuai.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.12;
+            z-index: -1;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 8px 0;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        
+        .login-btn {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--primary);
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .login-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+        
+        /* 轮播图 */
+        .hero-section {
+            margin-top: 80px;
+            padding: 40px 5% 0;
+        }
+        
+        .carousel-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            height: 550px;
+        }
+        
+        .carousel-slide {
+            position: relative;
+            height: 100%;
+            display: none;
+            animation: fade 1s ease;
+        }
+        
+        .carousel-slide.active {
+            display: block;
+        }
+        
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+        
+        .carousel-slide:hover img {
+            transform: scale(1.08);
+        }
+        
+        .slide-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 40px;
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.9), transparent);
+        }
+        
+        .slide-tag {
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .slide-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--light);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        }
+        
+        .slide-content p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            color: var(--light-gray);
+            line-height: 1.6;
+        }
+        
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 20px;
+        }
+        
+        .carousel-control {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .carousel-control:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+        }
+        
+        .indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .indicator.active {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+        
+        /* 天罡传专区 */
+        .tian-gang-section {
+            padding: 80px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-subtitle {
+            color: var(--accent);
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .section-desc {
+            font-size: 1.2rem;
+            color: var(--light-gray);
+            max-width: 700px;
+            margin: 30px auto 0;
+            line-height: 1.7;
+        }
+        
+        .tg-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .tg-card {
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tg-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(231, 76, 60, 0.4);
+            box-shadow: 0 15px 40px rgba(231, 76, 60, 0.3);
+        }
+        
+        .tg-card-img {
+            height: 280px;
+            overflow: hidden;
+        }
+        
+        .tg-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .tg-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        .tg-card-content {
+            padding: 30px;
+        }
+        
+        .tg-card-title {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+        
+        .tg-card-desc {
+            color: var(--light-gray);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .tg-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 10px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .tg-btn:hover {
+            background: var(--primary);
+            color: white;
+            gap: 12px;
+        }
+        
+        /* 特色部分 */
+        .features-section {
+            padding: 100px 5%;
+            background: rgba(10, 10, 10, 0.6);
+            margin-top: 80px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 40px 30px;
+            border-radius: 15px;
+            background: rgba(20, 20, 20, 0.6);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(231, 76, 60, 0.1);
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+        
+        .feature-desc {
+            color: var(--light-gray);
+            line-height: 1.7;
+        }
+        
+        /* 登录模态框 */
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .login-form {
+            background: rgba(30, 30, 40, 0.95);
+            width: 100%;
+            max-width: 450px;
+            border-radius: 15px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            position: relative;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 1.8rem;
+            color: var(--light-gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+        
+        .form-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--light);
+        }
+        
+        .form-subtitle {
+            text-align: center;
+            color: var(--light-gray);
+            margin-bottom: 40px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--light-gray);
+            font-weight: 500;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(20, 20, 20, 0.7);
+            color: var(--light);
+            font-size: 1rem;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .input-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
+        }
+        
+        .input-error {
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            display: none;
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+        
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(231, 76, 60, 0.4);
+        }
+        
+        .form-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        
+        .form-links a:hover {
+            color: var(--primary);
+        }
+        
+        /* 页脚 */
+        .footer {
+            background: rgba(10, 10, 10, 0.9);
+            padding: 70px 5% 40px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(231, 76, 60, 0.2);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.4rem;
+            color: var(--light);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 12px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(20, 20, 20, 0.8);
+            color: var(--light);
+            font-size: 1.3rem;
+            transition: var(--transition);
+        }
+        
+        .social-icons a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 50px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light-gray);
+            font-size: 0.95rem;
+        }
+        
+        /* 动画效果 */
+        @keyframes fade {
+            from {opacity: 0.4}
+            to {opacity: 1}
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .carousel-container {
+                height: 450px;
+            }
+            
+            .section-title {
+                font-size: 2.3rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .carousel-container {
+                height: 350px;
+            }
+            
+            .slide-content {
+                padding: 25px;
+            }
+            
+            .slide-content h2 {
+                font-size: 1.8rem;
+            }
+            
+            .login-form {
+                padding: 40px 25px;
+                margin: 0 20px;
+            }
+            
+            .form-footer {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-yin-yang"></i>
+            </div>
+            <div class="logo-text">不良人</div>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="sy.html" class="active">首页</a></li>
+            <li><a href="剧情介绍.html">剧情介绍</a></li>
+            <li><a href="321.html">排行</a></li>
+            <li><a href="456.html">人物介绍</a></li>
+            <li><a href="#">天罡传</a></li>
+            <li><a href="#">关于我们</a></li>
+        </ul>
+        
+        <button class="login-btn" id="loginBtn">登录</button>
+    </nav>
+
+    <!-- 轮播图 -->
+    <section class="hero-section">
+        <div class="carousel-container">
+            <div class="carousel-slide active">
+                <img src="天罡图1.jpg" alt="不良人海报">
+                <div class="slide-content">
+                    <div class="slide-tag">最新剧场版</div>
+                    <h2>天罡传</h2>
+                    <p>唐朝末年，天下大乱，藩镇割据，群雄并起。传说中不良人这个组织所隐匿起来的大宗宝藏，足以改变天下格局...</p>
+                </div>
+            </div>
+            
+            <div class="carousel-slide">
+                <img src="sy1.jpg" alt="李星云">
+                <div class="slide-content">
+                    <div class="slide-tag">主角介绍</div>
+                    <h2>乱世皇子</h2>
+                    <p>幼年惨遭灭门之祸，幸得不良帅所救，隐姓埋名拜师学艺。十年后下山历练，身负龙泉剑，寻找龙泉宝藏...</p>
+                </div>
+            </div>
+            
+            <div class="carousel-slide">
+                <img src="sy4.jpg" alt="姬如雪">
+                <div class="slide-content">
+                    <div class="slide-tag">人气角色</div>
+                    <h2>姬如雪</h2>
+                    <p>幻音坊女帝的侍女，奉命寻找火灵芝，却遇上了李星云。两人从互相敌对到相互扶持，情愫渐生...</p>
+                </div>
+            </div>
+            
+            <div class="carousel-controls">
+                <button class="carousel-control prev-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-control next-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="carousel-indicators">
+                <div class="indicator active"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tian-gang-section">
+        <div class="section-header">
+            <div class="section-subtitle">全新篇章</div>
+            <h2 class="section-title">不良人之天罡传</h2>
+            <p class="section-desc">全新篇章，不良帅袁天罡的传奇故事，揭开三百年前的不解之谜。2023年最受期待的动画电影，延续不良人系列经典，带来更宏大的世界观和更精彩的剧情。</p>
+        </div>
+        
+        <div class="tg-cards">
+            <div class="tg-card floating">
+                <div class="tg-card-img">
+                    <img src="天罡图1.jpg" alt="天罡传海报">
+                </div>
+                <div class="tg-card-content">
+                    <h3 class="tg-card-title">天罡传</h3>
+                    <p class="tg-card-desc">讲述不良帅袁天罡如何从一名普通道士成为掌控天下大势的不良人首领，以及他与李淳风之间的恩怨情仇。</p>
+                    <a href="789.html" class="tg-btn">了解更多 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="tg-card floating" style="animation-delay: 0.2s;">
+                <div class="tg-card-img">
+                    <img src="2.jpg" alt="角色设定">
+                </div>
+                <div class="tg-card-content">
+                    <h3 class="tg-card-title">全新角色</h3>
+                    <p class="tg-card-desc">天罡传引入多位全新角色，包括少年时期的袁天罡、神秘的天罡三十六校尉，以及各大门派的创始人。</p>
+                    <a href="#" class="tg-btn">人物介绍 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            
+            <div class="tg-card floating" style="animation-delay: 0.4s;">
+                <div class="tg-card-img">
+                    <img src="sy3.jpg" alt="剧情解析">
+                </div>
+                <div class="tg-card-content">
+                    <h3 class="tg-card-title">剧情解析</h3>
+                    <p class="tg-card-desc">深度解析天罡传剧情脉络，梳理时间线，剖析人物关系，带您走进三百年前那个风起云涌的江湖。</p>
+                    <a href="#" class="tg-btn">剧情分析 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- 登录 -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-form">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2 class="form-title">用户登录</h2>
+            <p class="form-subtitle">进入不良人江湖世界</p>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" placeholder="1-5个字符">
+                    <div class="input-error" id="usernameError">用户名长度必须在1-5个字符之间</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" placeholder="字母+数字组合，8-14位">
+                    <div class="input-error" id="passwordError">密码需为字母+数字组合，长度8-14位</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="email">邮箱</label>
+                    <input type="email" id="email" placeholder="请输入QQ邮箱">
+                    <div class="input-error" id="emailError">请输入有效的QQ邮箱地址</div>
+                </div>
+                
+                <div class="form-footer">
+                    <div class="form-links">
+                        <a href="#">忘记密码?</a>
+                    </div>
+                    <button type="submit" class="submit-btn">登录 <i class="fas fa-sign-in-alt"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>关于我们</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-angle-right"></i> 网站简介</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> 团队介绍</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> 联系方式</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> 加入我们</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>快速链接</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-angle-right"></i> 最新资讯</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> 动画时间表</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> 角色百科</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> 精彩图集</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>周边商城</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-angle-right"></i> 手办模型</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> 服装服饰</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> 文具用品</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> 数字藏品</a></li>
+                </ul>
+            </div>
+            
+        </div>
+        
+    </footer>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const indicators = document.querySelectorAll('.indicator');
+        const totalSlides = slides.length;
+        
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            slides[index].classList.add('active');
+            indicators[index].classList.add('active');
+            currentSlide = index;
+        }
+        function nextSlide() {
+            let next = currentSlide + 1;
+            if (next >= totalSlides) next = 0;
+            showSlide(next);
+        }
+        function prevSlide() {
+            let prev = currentSlide - 1;
+            if (prev < 0) prev = totalSlides - 1;
+            showSlide(prev);
+        }
+        let slideInterval = setInterval(nextSlide, 5000);
+        document.querySelector('.next-btn').addEventListener('click', () => {
+            clearInterval(slideInterval);
+            nextSlide();
+            slideInterval = setInterval(nextSlide, 5000);
+        });
+        document.querySelector('.prev-btn').addEventListener('click', () => {
+            clearInterval(slideInterval);
+            prevSlide();
+            slideInterval = setInterval(nextSlide, 5000);
+        });
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                clearInterval(slideInterval);
+                showSlide(index);
+                slideInterval = setInterval(nextSlide, 5000);
+            });
+        });
+        slides.forEach(slide => {
+            slide.addEventListener('click', (e) => {
+                if (e.target.tagName === 'IMG') {
+                    window.open(e.target.src, '_blank');
+                }
+            });
+        });
+        
+        // 登录
+        const loginBtn = document.getElementById('loginBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeModal = document.getElementById('closeModal');
+        
+        loginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+        });
+        
+        closeModal.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+        });
+        
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const emailInput = document.getElementById('email');
+        const usernameError = document.getElementById('usernameError');
+        const passwordError = document.getElementById('passwordError');
+        const emailError = document.getElementById('emailError');
+        
+        function validateUsername() {
+            const username = usernameInput.value.trim();
+            if (username.length < 1 || username.length > 5) {
+                usernameError.style.display = 'block';
+                return false;
+            }
+            usernameError.style.display = 'none';
+            return true;
+        }
+        
+        function validatePassword() {
+            const password = passwordInput.value.trim();
+            const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,14}$/;
+            if (!regex.test(password)) {
+                passwordError.style.display = 'block';
+                return false;
+            }
+            passwordError.style.display = 'none';
+            return true;
+        }
+        
+        function validateEmail() {
+            const email = emailInput.value.trim();
+            const regex = /^[1-9][0-9]{4,9}@qq\.com$/;
+            if (!regex.test(email)) {
+                emailError.style.display = 'block';
+                return false;
+            }
+            emailError.style.display = 'none';
+            return true;
+        }
+        
+        usernameInput.addEventListener('blur', validateUsername);
+        passwordInput.addEventListener('blur', validatePassword);
+        emailInput.addEventListener('blur', validateEmail);
+        
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const isUsernameValid = validateUsername();
+            const isPasswordValid = validatePassword();
+            const isEmailValid = validateEmail();
+            
+            if (isUsernameValid && isPasswordValid && isEmailValid) {
+                const userData = {
+                    username: usernameInput.value.trim(),
+                    email: emailInput.value.trim()
+                };
+                localStorage.setItem('badGuyUser', JSON.stringify(userData));
+                loginBtn.textContent = userData.username;
+                loginModal.style.display = 'none';
+                loginForm.reset();
+                alert('登录成功！欢迎进入不良人世界');
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('badGuyUser');
+            if (savedUser) {
+                const userData = JSON.parse(savedUser);
+                loginBtn.textContent = userData.username;
+            }
+        });
+    </script>
+</body>
+</html>
